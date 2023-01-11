@@ -34,7 +34,7 @@ const createWindow = () => {
       if (mainWindow) {
         mainWindow.webContents.send('cpu', v*100);
         mainWindow.webContents.send('mem', os.freememPercentage()*100);
-        mainWindow.webContents.send('total-mem', os.totalmem());  
+        mainWindow.webContents.send('total-mem', os.totalmem()/1024);
       }
 
       if (debug) {
