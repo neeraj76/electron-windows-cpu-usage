@@ -1,0 +1,2 @@
+1. Created app id on 'developer.apple.com'
+2. Created new app on 'appstoreconnect.apple.com'

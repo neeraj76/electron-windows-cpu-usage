@@ -1,0 +1,2 @@
+Asset validation failed (90236)
+Missing required icon. The application bundle does not contain an icon in ICNS format, containing both a 512x512 and a 512x512@2x image. For further assistance, see the Apple Human Interface Guidelines at https://developer.apple.com/macos/human-interface-guidelines/icons-and-images/app-icon (ID: 44851b2b-6b74-4c81-9dab-d7a4a546f9be)

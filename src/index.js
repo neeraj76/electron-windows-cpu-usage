@@ -33,13 +33,13 @@ const createWindow = () => {
     os.cpuUsage(function(v) {
       if (mainWindow) {
         mainWindow.webContents.send('cpu', v*100);
-        mainWindow.webContents.send('mem', os.freememPercentage());
+        mainWindow.webContents.send('mem', os.freememPercentage()*100);
         mainWindow.webContents.send('total-mem', os.totalmem());  
       }
 
       if (debug) {
         console.log('CPU Usage (%):' + v*100);
-        console.log('Mem Usage (%):' + os.freememPercentage());      
+        console.log('Mem Usage (%):' + os.freememPercentage()*100);      
         console.log('Total Mem (GB):' + os.totalmem()/1024);  
       }
     });

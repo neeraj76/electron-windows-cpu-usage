@@ -1,0 +1,6 @@
+# Use entitlementsInherit instead of entitlements
+    "mac": {
+
+      "entitlementsInherit": "./entitlements.mac.plist",
+
+    },

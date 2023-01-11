@@ -1,7 +1,7 @@
 {
-  "name": "cool_app",
-  "productName": "cool_app",
-  "version": "1.0.0",
+  "name": "cpu_monitor",
+  "productName": "CPU Monitor",
+  "version": "1.0.2",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,45 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build-installer:m": "electron-builder -m",
+    "build-installer:w": "electron-builder -w"
+  },
+  "build": {
+    "appId": "com.glassball.cpumonitor",
+    "win": {
+      "target": ["nsis"],
+      "icon": "./cpu.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "mac": {
+      "icon": "./cpu.icns",
+      "entitlementsInherit": "./entitlements.mac.plist",
+      "category": "public.app-category.productivity",
+      "provisioningProfile": "embedded.provisionprofile",
+      "target": [
+        {
+          "target": "mas",
+          "arch": [
+            "universal"
+          ]
+        }
+      ]
+    },
+    "mas": {
+      "icon": "./cpu.icns",
+      "entitlements": "./entitlements.mas.plist",
+      "category": "public.app-category.productivity",
+      "provisioningProfile": "embedded.provisionprofile"      
+    },    
+    "nsis": {
+      "installerIcon": "./cpu.ico",
+      "uninstallerIcon": "./cpu.ico",
+      "uninstallDisplayName": "CPU Monitor",
+      "license": "./license.txt",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "keywords": [],
   "author": {
@@ -22,6 +60,7 @@
     "os-utils": "^0.0.14"
   },
   "devDependencies": {
+    "electron-builder": "^23.6.0",    
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-deb": "^6.0.4",
     "@electron-forge/maker-rpm": "^6.0.4",

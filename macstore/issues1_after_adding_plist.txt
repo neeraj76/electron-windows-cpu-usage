@@ -1,0 +1,15 @@
+Asset validation failed (90296)
+App sandbox not enabled. 
+The following executables must include the "com.apple.security.app-sandbox" entitlement with a Boolean value of true in the entitlements property list: 
+[
+  ( 
+    "com.glassball.cpumonitor.pkg/Payload/CPU Monitor.app/Contents/Frameworks/CPU Monitor Helper (GPU).app/Contents/MacOS/CPU Monitor Helper (GPU)", 
+    "com.glassball.cpumonitor.pkg/Payload/CPU Monitor.app/Contents/Frameworks/CPU Monitor Helper (Plugin).app/Contents/MacOS/CPU Monitor Helper (Plugin)", 
+    "com.glassball.cpumonitor.pkg/Payload/CPU Monitor.app/Contents/Frameworks/CPU Monitor Helper (Renderer).app/Contents/MacOS/CPU Monitor Helper (Renderer)", 
+    "com.glassball.cpumonitor.pkg/Payload/CPU Monitor.app/Contents/Frameworks/CPU Monitor Helper.app/Contents/MacOS/CPU Monitor Helper" 
+  )
+] 
+Refer to App Sandbox page at https://developer.apple.com/documentation/security/app_sandbox for more information on sandboxing your app. (ID: 4d8cbae8-92e2-40e4-9b6d-554c3eb57337)
+
+Asset validation failed (90236)
+Missing required icon. The application bundle does not contain an icon in ICNS format, containing both a 512x512 and a 512x512@2x image. For further assistance, see the Apple Human Interface Guidelines at https://developer.apple.com/macos/human-interface-guidelines/icons-and-images/app-icon (ID: ff27bcaf-a64f-4bd8-8243-537182260efd)
