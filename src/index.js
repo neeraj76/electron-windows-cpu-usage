@@ -7,10 +7,12 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let mainWindow;
+
 const createWindow = () => {
   const debug = false;
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 600,
     icon: __dirname + '/icon.ico',
@@ -29,9 +31,11 @@ const createWindow = () => {
 
   setInterval(() => {
     os.cpuUsage(function(v) {
-      mainWindow.webContents.send('cpu', v*100);
-      mainWindow.webContents.send('mem', os.freememPercentage());
-      mainWindow.webContents.send('total-mem', os.totalmem());
+      if (mainWindow) {
+        mainWindow.webContents.send('cpu', v*100);
+        mainWindow.webContents.send('mem', os.freememPercentage());
+        mainWindow.webContents.send('total-mem', os.totalmem());  
+      }
 
       if (debug) {
         console.log('CPU Usage (%):' + v*100);
@@ -54,6 +58,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+  mainWindow = null;
 });
 
 app.on('activate', () => {
