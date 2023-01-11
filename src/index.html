@@ -6,20 +6,38 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
+    <div class="box">
+      <span class="label">CPU (%)</span>
+      <span id="cpu">-</span>
+    </div>
+    <div class="box">
+      <span class="label">Free Mem (%)</span>
+      <span id="mem">-</span>
+    </div>
+    <div class="box">
+      <span class="label">Total Mem (GB)</span>
+      <span id="total-mem">-</span>
+    </div>
+
     <script>
       const electron = require('electron');
       const ipcRenderer = electron.ipcRenderer;
+      const debug = false;
 
       ipcRenderer.on('cpu', (event,data) => {
-        console.log('cpu % ' + data);
+        if (debug)
+          console.log('cpu % ' + data);
+        document.getElementById('cpu').innerHTML = data.toFixed(2);
       });
       ipcRenderer.on('mem', (event,data) => {
-        console.log('mem % ' + data);
+        if (debug)
+          console.log('mem % ' + data);
+        document.getElementById('mem').innerHTML = data.toFixed(2);
       });
       ipcRenderer.on('total-mem', (event,data) => {
-        console.log('total-mem % ' + data);
+        if (debug)
+          console.log('total-mem % ' + data);
+        document.getElementById('total-mem').innerHTML = data.toFixed(2);
       })            
     </script>
   </body>
