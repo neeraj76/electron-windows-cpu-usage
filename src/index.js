@@ -107,7 +107,10 @@ if (process.platform === 'darwin') {
   menuTemplate.unshift(  {
     label: 'Default'
   });
+}
 
+// Need to check if we use the following for other Operating Systems as well.
+if (process.platform === 'darwin') {
   menuTemplate.push({
     label: 'Window',
     submenu: [
