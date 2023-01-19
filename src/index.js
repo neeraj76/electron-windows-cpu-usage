@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow } = require('electron');
 const os = require('os-utils');
 const path = require('path');
 
@@ -44,6 +44,16 @@ const createWindow = () => {
       }
     });
   }, 1000);
+
+  const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(mainMenu);
+};
+
+const closeWindow = () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+  mainWindow = null;
 };
 
 // This method will be called when Electron has finished
@@ -54,12 +64,7 @@ app.on('ready', createWindow);
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-  mainWindow = null;
-});
+app.on('window-all-closed', closeWindow);
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
@@ -69,5 +74,52 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+const main_qualifier_key = process.platform === 'darwin' ? 'Command' : 'Ctrl';
+const second_qualifier_key = process.platform === 'darwin' ? 'Alt' : 'Shift';
+
+const menuTemplate = [
+  {
+    label: 'Monitor',
+    submenu: [
+      {
+        label: 'Open',
+        accelerator: `${main_qualifier_key}+O`,
+        click() {
+          createWindow();
+        }
+      },
+      {
+        label: 'Quit',
+        accelerator: `${main_qualifier_key}+Q`,
+        click() {
+          mainWindow.close();
+        }
+      }
+    ]
+  }
+]
+
+if (process.platform === 'darwin') {
+  menuTemplate.unshift(  {
+    label: 'Default'
+  })
+}
+
+// convention: 'production', 'development', 'staging', 'test'
+if (process.env.NODE_ENV !== 'production') {
+  menuTemplate.push({
+    label: 'View',
+    submenu: [
+      {
+        role: 'reload',
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: `${main_qualifier_key}+${second_qualifier_key}+I`,
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      }
+    ]
+  })
+}
