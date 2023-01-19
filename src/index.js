@@ -8,6 +8,7 @@ if (require('electron-squirrel-startup')) {
 }
 
 let mainWindow;
+let mainMenu;
 
 const createWindow = () => {
   const debug = false;
@@ -15,7 +16,6 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 600,
-    icon: __dirname + '/icon.ico',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -45,8 +45,20 @@ const createWindow = () => {
     });
   }, 1000);
 
-  const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
+};
+
+const setSubmenuStatusById = (submenuId, status) => {
+  console.log(`submenuId=${submenuId} status=${status}`);
+
+  const submenuItem = mainMenu.getMenuItemById(submenuId);
+  if (submenuItem) {
+    console.log(submenuItem);
+    submenuItem.enabled = status;
+  } else {
+    console.log(`Couldn't fine the menu item`);
+  }
 };
 
 const closeWindow = () => {
@@ -54,6 +66,11 @@ const closeWindow = () => {
     app.quit();
   }
   mainWindow = null;
+  
+  setSubmenuStatusById("submenu-open", true);
+  setSubmenuStatusById("submenu-close", false);
+  setSubmenuStatusById("view-reload", false);
+  setSubmenuStatusById("view-dev-tools", false);
 };
 
 // This method will be called when Electron has finished
@@ -80,10 +97,13 @@ const second_qualifier_key = process.platform === 'darwin' ? 'Alt' : 'Shift';
 const menuTemplate = [
   {
     label: 'Monitor',
+    id: "menu-monitor",
     submenu: [
       {
         label: 'Open',
+        id: "submenu-open",
         accelerator: `${main_qualifier_key}+O`,
+        enabled: false,
         click() {
           if (!mainWindow) {
             createWindow();
@@ -91,7 +111,8 @@ const menuTemplate = [
         }
       },
       {
-        label: 'Quit',
+        label: 'Close',
+        id: "submenu-close",
         accelerator: `${main_qualifier_key}+Q`,
         click() {
           if (mainWindow) {
@@ -105,7 +126,12 @@ const menuTemplate = [
 
 if (process.platform === 'darwin') {
   menuTemplate.unshift(  {
-    label: 'Default'
+    label: app.name,
+    submenu: [
+      {
+        role: 'about'
+      }       
+    ]
   });
 }
 
@@ -128,11 +154,15 @@ if (process.platform === 'darwin') {
 if (process.env.NODE_ENV !== 'production') {
   menuTemplate.push({
     label: 'View',
+    id: "view",
+    enabled: true,
     submenu: [
       {
+        id: "view-reload",
         role: 'reload',
       },
       {
+        id: "view-dev-tools",
         label: 'Toggle Developer Tools',
         accelerator: `${main_qualifier_key}+${second_qualifier_key}+I`,
         click(item, focusedWindow) {
