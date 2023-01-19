@@ -1,0 +1,1 @@
+appleId="neerajgupta.mbox@gmail.com" appleIdPassword="ueib-tpwi-jjlb-msko" GH_TOKEN=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 yarn release:m

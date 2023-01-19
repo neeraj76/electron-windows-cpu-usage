@@ -1,0 +1,5 @@
+https://developer.apple.com/forums/thread/661176
+
+https://www.electronjs.org/docs/latest/tutorial/mac-app-store-submission-guide
+
+We had to add the device UUID in registered devices. This was a major step.
