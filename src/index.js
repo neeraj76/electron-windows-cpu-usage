@@ -10,6 +10,8 @@ if (require('electron-squirrel-startup')) {
 let mainWindow;
 let mainMenu;
 
+const isMac = process.platform === 'darwin';
+
 const createWindow = () => {
   const debug = false;
   // Create the browser window.
@@ -50,11 +52,11 @@ const createWindow = () => {
 };
 
 const setSubmenuStatusById = (submenuId, status) => {
-  console.log(`submenuId=${submenuId} status=${status}`);
+  // console.log(`submenuId=${submenuId} status=${status}`);
 
   const submenuItem = mainMenu.getMenuItemById(submenuId);
   if (submenuItem) {
-    console.log(submenuItem);
+    // console.log(submenuItem);
     submenuItem.enabled = status;
   } else {
     console.log(`Couldn't fine the menu item`);
@@ -62,7 +64,9 @@ const setSubmenuStatusById = (submenuId, status) => {
 };
 
 const closeWindow = () => {
-  if (process.platform !== 'darwin') {
+  console.log(`closeWindow`);
+
+  if (!isMac) {
     app.quit();
   }
   mainWindow = null;
@@ -91,8 +95,8 @@ app.on('activate', () => {
   }
 });
 
-const main_qualifier_key = process.platform === 'darwin' ? 'Command' : 'Ctrl';
-const second_qualifier_key = process.platform === 'darwin' ? 'Alt' : 'Shift';
+const main_qualifier_key = isMac ? 'Command' : 'Ctrl';
+const second_qualifier_key = isMac ? 'Alt' : 'Shift';
 
 const menuTemplate = [
   {
@@ -113,18 +117,13 @@ const menuTemplate = [
       {
         label: 'Close',
         id: "submenu-close",
-        accelerator: `${main_qualifier_key}+Q`,
-        click() {
-          if (mainWindow) {
-            mainWindow.close();
-          }
-        }
-      }
+        role: isMac ? "close" : "quit"
+      }     
     ]
   }
 ]
 
-if (process.platform === 'darwin') {
+if (isMac) {
   menuTemplate.unshift(  {
     label: app.name,
     submenu: [
@@ -136,25 +135,27 @@ if (process.platform === 'darwin') {
 }
 
 // Need to check if we use the following for other Operating Systems as well.
-if (process.platform === 'darwin') {
-  menuTemplate.push({
-    label: 'Window',
-    submenu: [
-      {
-        role: 'minimize',
-      },    
-      {
-        role: 'zoom',
-      }
-    ]      
-  });
-}
+menuTemplate.push({
+  label: 'View',
+  submenu: [
+    { role: 'resetZoom' },
+    { role: 'zoomIn' },
+    { role: 'zoomOut' },
+    { type: 'separator' },
+    { role: 'togglefullscreen' }
+  ]      
+});
+
+menuTemplate.push({
+  role: 'windowMenu'
+});
+
 
 // convention: 'production', 'development', 'staging', 'test'
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'development') {
   menuTemplate.push({
-    label: 'View',
-    id: "view",
+    label: 'Developer',
+    id: 'developer',
     enabled: true,
     submenu: [
       {
@@ -172,3 +173,16 @@ if (process.env.NODE_ENV !== 'production') {
     ]
   })
 }
+
+menuTemplate.push({
+  role: 'help',
+  submenu: [
+    {
+      label: 'Learn More',
+      click: async () => {
+        const { shell } = require('electron')
+        await shell.openExternal('https://electronjs.org')
+      }
+    }
+  ]    
+});
