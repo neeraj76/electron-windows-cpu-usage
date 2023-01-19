@@ -90,3 +90,6 @@ out/
 
 .idea
 dist
+
+.local
+.vscode

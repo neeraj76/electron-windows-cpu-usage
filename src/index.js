@@ -85,14 +85,18 @@ const menuTemplate = [
         label: 'Open',
         accelerator: `${main_qualifier_key}+O`,
         click() {
-          createWindow();
+          if (!mainWindow) {
+            createWindow();
+          }
         }
       },
       {
         label: 'Quit',
         accelerator: `${main_qualifier_key}+Q`,
         click() {
-          mainWindow.close();
+          if (mainWindow) {
+            mainWindow.close();
+          }
         }
       }
     ]
@@ -102,7 +106,19 @@ const menuTemplate = [
 if (process.platform === 'darwin') {
   menuTemplate.unshift(  {
     label: 'Default'
-  })
+  });
+
+  menuTemplate.push({
+    label: 'Window',
+    submenu: [
+      {
+        role: 'minimize',
+      },    
+      {
+        role: 'zoom',
+      }
+    ]      
+  });
 }
 
 // convention: 'production', 'development', 'staging', 'test'
