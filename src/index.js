@@ -1,5 +1,5 @@
 const { app, Menu, BrowserWindow } = require('electron');
-const os = require('os-utils');
+const osUtils = require('os-utils');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -32,17 +32,17 @@ const createWindow = () => {
   // mainWindow.webContents.openDevTools();
 
   setInterval(() => {
-    os.cpuUsage(function(v) {
+    osUtils.cpuUsage(function(v) {
       if (mainWindow) {
         mainWindow.webContents.send('cpu', v*100);
-        mainWindow.webContents.send('mem', os.freememPercentage()*100);
-        mainWindow.webContents.send('total-mem', os.totalmem()/1024);
+        mainWindow.webContents.send('mem', osUtils.freememPercentage()*100);
+        mainWindow.webContents.send('total-mem', osUtils.totalmem()/1024);
       }
 
       if (debug) {
         console.log('CPU Usage (%):' + v*100);
-        console.log('Mem Usage (%):' + os.freememPercentage()*100);      
-        console.log('Total Mem (GB):' + os.totalmem()/1024);  
+        console.log('Mem Usage (%):' + osUtils.freememPercentage()*100);
+        console.log('Total Mem (GB):' + osUtils.totalmem()/1024);
       }
     });
   }, 1000);
