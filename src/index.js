@@ -118,7 +118,12 @@ const menuTemplate = [
         label: 'Close',
         id: "submenu-close",
         role: isMac ? "close" : "quit"
-      }     
+      },     
+      {
+        label: 'Quit',
+        visible: isMac,
+        role: "quit"
+      }         
     ]
   }
 ]
